@@ -1,5 +1,5 @@
 import EDManagement from '../../services/EDManagement'
-const API_URL = 'api/v1/users'
+const API_URL = 'api/v1/staffs'
 export const employeeList = {
   namespaced: true,
   state: {
@@ -22,8 +22,8 @@ export const employeeList = {
         x => x.id === employee.id
       )
       edtObj.username = employee.username
-      edtObj.full_name = employee.full_name
-      edtObj.phone_number = employee.phone_number
+      edtObj.fullName = employee.fullName
+      edtObj.phoneNumber = employee.phoneNumber
       edtObj.address = employee.address
       edtObj.email = employee.email
     },
@@ -33,9 +33,9 @@ export const employeeList = {
   },
   actions: {
     _getAllEmployee (context) {
-      return EDManagement.get(API_URL, {}).then(
+      return EDManagement.get(API_URL).then(
         response => {
-          context.commit('_setListOfEmployee', response.data)
+          context.commit('_setListOfEmployee', response.data.data)
           return response.data
         },
         error => {
@@ -44,10 +44,9 @@ export const employeeList = {
       )
     },
     _addEmployee (context, employee) {
-      debugger
       return EDManagement.post(API_URL, employee).then(
         response => {
-          context.commit('addEmployeeMutation', response.data)
+          context.commit('addEmployeeMutation', response.data.data)
           return response.data
         },
         error => {
@@ -58,7 +57,7 @@ export const employeeList = {
     _updateEmployee (context, employee) {
       return EDManagement.put(API_URL + '/' + employee.id, employee).then(
         response => {
-          context.commit('_updateEmployeeMutation', response.data)
+          context.commit('_updateEmployeeMutation', response.data.data)
           return response.data
         },
         error => {
@@ -69,7 +68,7 @@ export const employeeList = {
     _deleteEmployee (context, employee) {
       return EDManagement.delete(API_URL + '/' + employee.id).then(
         response => {
-          context.commit('_deleteEmployeeMutation', response.data)
+          context.commit('_deleteEmployeeMutation', response.data.data)
           return response.data
         },
         error => {

@@ -47,7 +47,7 @@
                 </v-row>
                 <v-row>
                   <v-text-field
-                    v-model="editedItem.full_name"
+                    v-model="editedItem.fullName"
                     label="Employee Name"
                     :rules="employeeNameRules"
                     :counter="100"
@@ -67,7 +67,7 @@
                 </v-row>
                 <v-row>
                   <v-text-field
-                    v-model="editedItem.phone_number"
+                    v-model="editedItem.phoneNumber"
                     label="Phone Number"
                     :rules="phoneNumberRules"
                     clearable
@@ -145,9 +145,9 @@ export default {
           value: 'id'
         },
         { text: 'User Name', value: 'username' },
-        { text: 'Employee Name', value: 'full_name' },
+        { text: 'Employee Name', value: 'fullName' },
         { text: 'Email', value: 'email' },
-        { text: 'Phonenumber', value: 'phone_number' },
+        { text: 'Phonenumber', value: 'phoneNumber' },
         { text: 'Adrress', value: 'address' },
         { text: 'Actions', value: 'actions', sortable: false }
       ],
@@ -155,18 +155,18 @@ export default {
       editedItem: {
         id: '',
         username: '',
-        full_name: '',
+        fullName: '',
         email: '',
-        phone_number: '',
+        phoneNumber: '',
         address: '',
         department_staff: []
       },
       defaultItem: {
         id: '',
         username: '',
-        full_name: '',
+        fullName: '',
         email: '',
-        phone_number: '',
+        phoneNumber: '',
         address: '',
         department_staff: []
       }

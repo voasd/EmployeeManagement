@@ -55,22 +55,26 @@ export const departmentList = {
       )
     },
     _updateDepartment (context, department) {
-      return EDManagement.put(API_URL, { department }).then(response => {
-        context.commit('_updateDepartmentMutation', response.data)
-        return response.data
-      },
-      error => {
-        return Promise.reject(error)
-      })
+      return EDManagement.put(API_URL, { department }).then(
+        response => {
+          context.commit('_updateDepartmentMutation', response.data)
+          return response.data
+        },
+        error => {
+          return Promise.reject(error)
+        }
+      )
     },
     _deleteDepartment (context, department) {
-      return EDManagement.delete(API_URL + '/' + department.id).then(response => {
-        context.commit('_deleteDepartmentMutation', response.data)
-        return response.data
-      },
-      error => {
-        return Promise.reject(error)
-      })
+      return EDManagement.delete(API_URL + '/' + department.id).then(
+        response => {
+          context.commit('_deleteDepartmentMutation', response.data)
+          return response.data
+        },
+        error => {
+          return Promise.reject(error)
+        }
+      )
     }
   }
 }

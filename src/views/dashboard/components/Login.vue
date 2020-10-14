@@ -33,18 +33,6 @@
             <v-btn class="mr-4 login100-form-btn" @click="doLogin()">SIGN IN</v-btn>
           </v-form>
           {{ message}}
-          <div class="container-login100-form-btn m-t-17">
-            <span class="w-full text-center txt2 p-b-20">OR SIGN IN WITH</span>
-            <div class="btn-face m-b-20" style="color: #ffff; margin-right:1.2vw">
-              <i class="fab fa-facebook"></i> Facebook
-            </div>
-
-            <div class="btn-google m-b-20" @click="signInWithGoogle()">
-              <!-- <img src="../images/icons/icon-google.png" /> -->
-              Google
-            </div>
-          </div>
-
           <div class="w-full text-center p-t-5">
             <span class="txt2">Not a member?</span>
 
@@ -57,8 +45,7 @@
 </template>
 
 <script>
-// import firebase from 'firebase/app'
-// import { mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 export default {
   data () {
     return {
@@ -81,14 +68,14 @@ export default {
     // console.log('this.user', this.user)
   },
   methods: {
-    // ...mapActions('auth', ['_login', '_loginWithGoogle']),
+    ...mapActions('auth', ['_login']),
     doLogin () {
       const valid = this.$refs.form.validate()
       if (valid) {
         if (this.user.username && this.user.password) {
           this._login(this.user).then(
             response => {
-              this.$router.push('home')
+              this.$router.push('/pages/user')
             },
             error => {
               this.user.username = ''
@@ -99,36 +86,6 @@ export default {
           )
         } // end this.user.username && this.user.password
       } // end valid
-    },
-    signInWithGoogle () {
-      // const self = this
-      // const provider = new firebase.auth.GoogleAuthProvider()
-      // console.log(provider)
-      // firebase
-      //   .auth()
-      //   .signInWithPopup(provider)
-      //   .then(result => {
-      //     firebase.auth().currentUser.getIdToken(true).then(function (idToken) {
-      //       console.log('this.token', idToken)
-      //       // Send token to your backend via HTTPS
-      //       self._loginWithGoogle(idToken).then(
-      //         response => {
-      //           console.log('this.result', result)
-      //           self.$router.push('admin')
-      //         },
-      //         error => {
-      //           console.log('error', error)
-      //         }
-      //       )
-      //       // ...
-      //     }).catch(function (error) {
-      //       // Handle error
-      //       console.log('error: ', error)
-      //     })
-      //   })
-      //   .catch(err => {
-      //     console.log('this.err', err)
-      //   })
     }
   }
 }
