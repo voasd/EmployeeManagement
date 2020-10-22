@@ -44,6 +44,9 @@ export const employeeList = {
       )
     },
     _addEmployee (context, employee) {
+      employee.password = '1'
+      employee.passwordConfirmation = '1'
+      employee.roleId = 2
       return EDManagement.post(API_URL, employee).then(
         response => {
           context.commit('addEmployeeMutation', response.data.data)
@@ -69,7 +72,7 @@ export const employeeList = {
       return EDManagement.delete(API_URL + '/' + employee.id).then(
         response => {
           context.commit('_deleteEmployeeMutation', response.data.data)
-          return response.data
+          return response.data.data
         },
         error => {
           return Promise.reject(error)

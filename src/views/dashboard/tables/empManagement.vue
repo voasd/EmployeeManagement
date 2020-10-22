@@ -33,9 +33,6 @@
             <v-card-text>
               <v-container>
                 <v-row>
-                  <v-text-field v-model="editedItem.id" label="Employee ID" />
-                </v-row>
-                <v-row>
                   <v-text-field
                     v-model="editedItem.username"
                     label="User Name"
@@ -139,12 +136,11 @@ export default {
       ],
       headers: [
         {
-          text: 'EmployeeID',
-          align: 'start',
+          text: 'User Name',
+          value: 'username',
           sortable: false,
-          value: 'id'
+          aligh: 'start'
         },
-        { text: 'User Name', value: 'username' },
         { text: 'Employee Name', value: 'fullName' },
         { text: 'Email', value: 'email' },
         { text: 'Phonenumber', value: 'phoneNumber' },
@@ -203,10 +199,11 @@ export default {
       this.dialog = true
     },
 
-    deleteItem (item) {
-      const index = this._listOfEmployee.indexOf(item)
-      confirm('Are you sure you want to delete this item?') &&
-        this._listOfEmployee.splice(index, 1)
+    async deleteItem (item) {
+      // const index = this._listOfEmployee.indexOf(item)
+      confirm('Are you sure you want to delete this employee?') &&
+        (await this._deleteEmployee(item))
+        //  && this._listOfEmployee.splice(index, 1)
     },
 
     close () {
