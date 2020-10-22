@@ -1,16 +1,9 @@
 import EDManagement from '@/services/EDManagement'
-const API_URL = ''
+const API_URL = 'api/v1/departments'
 export const departmentList = {
   namespaced: true,
   state: {
-    _listOfDepartment: [
-      {
-        depId: 'SQZZDAE',
-        depName: 'Service Room',
-        hotLine: '0903265487',
-        roomNum: 123
-      }
-    ]
+    _listOfDepartment: []
   },
   getters: {
     _getListOfDepartment (state) {
@@ -22,10 +15,14 @@ export const departmentList = {
       state._listOfDepartment = _listOfDepartment
     },
     _updateDepartmentMutation (state, department) {
-      // const edtObj = state._listOfDepartment.find(x => x.id === department.id)
+      const edtObj = state._listOfDepartment.find(x => x.id === department.id)
+      edtObj.departmentName = department.departmentName
+      edtObj.hotline = department.hotline
+      edtObj.roomNumber = department.roomNumber
     },
-    _deleteDepartmentMutation (state, department) {
-      state._listOfEmployee.pop(x => x.id === department.id)
+    _deleteDepartmentMutation (state, departmentID) {
+      debugger
+      state._listOfDepartment.pop(x => x.id === departmentID)
     },
     _addDepartmentMutation (state, department) {
       state._listOfDepartment.push(department)
@@ -33,10 +30,10 @@ export const departmentList = {
   },
   actions: {
     _getAllDepartment (context) {
-      return EDManagement.get(API_URL, {}).then(
+      return EDManagement.get(API_URL).then(
         response => {
-          context.commit('_setListOfDepartment', response.data)
-          return response.data
+          context.commit('_setListOfDepartment', response.data.data)
+          return response.data.data
         },
         error => {
           return Promise.reject(error)
@@ -44,10 +41,10 @@ export const departmentList = {
       )
     },
     _addDepartment (context, department) {
-      return EDManagement.post(API_URL, { department }).then(
+      return EDManagement.post(API_URL, department).then(
         response => {
-          context.commit('_addDepartmentMutation', response.data)
-          return response.data
+          context.commit('_addDepartmentMutation', response.data.data)
+          return response.data.data
         },
         error => {
           return Promise.reject(error)
@@ -55,10 +52,10 @@ export const departmentList = {
       )
     },
     _updateDepartment (context, department) {
-      return EDManagement.put(API_URL, { department }).then(
+      return EDManagement.put(API_URL, department).then(
         response => {
-          context.commit('_updateDepartmentMutation', response.data)
-          return response.data
+          context.commit('_updateDepartmentMutation', response.data.data)
+          return response.data.data
         },
         error => {
           return Promise.reject(error)
@@ -68,8 +65,8 @@ export const departmentList = {
     _deleteDepartment (context, department) {
       return EDManagement.delete(API_URL + '/' + department.id).then(
         response => {
-          context.commit('_deleteDepartmentMutation', response.data)
-          return response.data
+          context.commit('_deleteDepartmentMutation', response.data.data)
+          return response.data.data
         },
         error => {
           return Promise.reject(error)

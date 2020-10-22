@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="listDepartment"
+    :items="_listOfDepartment"
     :search="search"
     sort-by="name"
     class="elevation-1"
@@ -22,7 +22,7 @@
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on, attrs }">
             <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-              New Item
+              New Department
             </v-btn>
           </template>
           <v-card>
@@ -34,13 +34,16 @@
               <v-container>
                 <v-row>
                   <v-text-field
-                    v-model="editedItem.depId"
+                    v-model="editedItem.id"
                     label="Department ID"
-                  />
+                    :rules="deparmentIdRules"
+                    clearable
+                  >
+                  </v-text-field>
                 </v-row>
                 <v-row>
                   <v-text-field
-                    v-model="editedItem.depName"
+                    v-model="editedItem.departmentName"
                     label="Department Name"
                     :rules="departmentNameRules"
                     clearable
@@ -48,7 +51,7 @@
                 </v-row>
                 <v-row>
                   <v-text-field
-                    v-model="editedItem.hotLine"
+                    v-model="editedItem.hotline"
                     label="Hot Line"
                     clearable
                     :rules="phoneNumberRules"
@@ -56,10 +59,10 @@
                 </v-row>
                 <v-row>
                   <v-text-field
-                    v-model="editedItem.roomNum"
+                    v-model="editedItem.roomNumber"
                     label="Room Num"
                     clearable
-                    :rules="roomNumRules"
+                    :rules="roomNumberRules"
                   />
                 </v-row>
               </v-container>
@@ -86,11 +89,6 @@
         mdi-delete
       </v-icon>
     </template>
-    <template v-slot:no-data>
-      <v-btn color="primary" @click="initialize">
-        Reset
-      </v-btn>
-    </template>
   </v-data-table>
 </template>
 <script>
@@ -106,12 +104,18 @@ export default {
           text: 'Department ID',
           align: 'start',
           sortable: false,
-          value: 'depId'
+          value: 'id'
         },
-        { text: 'Department Name', value: 'depName' },
-        { text: 'Hotline', value: 'hotLine' },
-        { text: 'Roomnum', value: 'roomNum' },
+        { text: 'Department Name', value: 'departmentName' },
+        { text: 'hotline', value: 'hotline' },
+        { text: 'roomNumber', value: 'roomNumber' },
         { text: 'Actions', value: 'actions', sortable: false }
+      ],
+      deparmentIdRules: [
+        v => !!v || 'Phone Number is required',
+        v =>
+          (v && v.length < 450) ||
+          'Department id must be less than 150 characters'
       ],
       phoneNumberRules: [
         v => !!v || 'Phone Number is required',
@@ -124,23 +128,22 @@ export default {
           (v && v.length < 450) ||
           'Department name must be less than 450 characters'
       ],
-      roomNumRules: [
+      roomNumberRules: [
         v => !!v || 'Room num is required',
         v => (v && v.length < 10) || 'Room num must be less than 10 characters'
       ],
-      listDepartment: [],
       editedIndex: -1,
       editedItem: {
-        depId: '',
-        depName: '',
-        hotLine: '',
-        roomNum: ''
+        id: '',
+        departmentName: '',
+        hotline: '',
+        roomNumber: ''
       },
       defaultItem: {
-        depId: '',
-        depName: '',
-        hotLine: '',
-        roomNum: ''
+        id: '',
+        departmentName: '',
+        hotline: '',
+        roomNumber: ''
       }
     }
   },
@@ -149,7 +152,7 @@ export default {
     ...mapGetters('departmentList', ['_getListOfDepartment']),
     ...mapState('departmentList', ['_listOfDepartment']),
     formTitle () {
-      return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+      return this.editedIndex === -1 ? 'New Department' : 'Edit Department'
     }
   },
 
@@ -159,10 +162,9 @@ export default {
     }
   },
 
-  created () {
-    this.initialize()
+  mounted () {
+    this._getAllDepartment()
   },
-
   methods: {
     ...mapActions('departmentList', [
       '_getAllDepartment',
@@ -170,20 +172,17 @@ export default {
       '_updateDepartment',
       '_deleteDepartment'
     ]),
-    initialize () {
-      this.listDepartment = this._getListOfDepartment
-    },
-
     editItem (item) {
-      this.editedIndex = this.listDepartment.indexOf(item)
+      this.editedIndex = this._listOfDepartment.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
 
-    deleteItem (item) {
-      const index = this.listDepartment.indexOf(item)
-      confirm('Are you sure you want to delete this item?') &&
-        this.listDepartment.splice(index, 1)
+    async deleteItem (item) {
+      // const index = this._listOfDepartment.indexOf(item)
+      confirm('Are you sure you want to delete this department?') &&
+        (await this._deleteDepartment(item))
+      // await   this._listOfDepartment.splice(index, 1)
     },
 
     close () {
@@ -194,11 +193,13 @@ export default {
       })
     },
 
-    save () {
+    async save () {
       if (this.editedIndex > -1) {
-        Object.assign(this.listDepartment[this.editedIndex], this.editedItem)
+        await this._updateDepartment(this.editedItem)
+        // Object.assign(this._listOfDepartment[this.editedIndex], this.editedItem)
       } else {
-        this.listDepartment.push(this.editedItem)
+        await this._addDepartment(this.editedItem)
+        // this._listOfDepartment.push(this.editedItem)
       }
       this.close()
     }
