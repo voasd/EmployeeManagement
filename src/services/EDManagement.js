@@ -8,9 +8,9 @@ class EDManagement {
       .get(
         API_URL + url,
         {
-          params: obj
-        },
-        { headers: authHeader() }
+          params: obj,
+          headers: authHeader()
+        }
       )
       .then(response => {
         return response
@@ -47,9 +47,9 @@ class EDManagement {
       .delete(
         API_URL + url,
         {
-          params: obj
-        },
-        { headers: authHeader() }
+          params: obj,
+          headers: authHeader()
+        }
       )
       .then(response => {
         return response
