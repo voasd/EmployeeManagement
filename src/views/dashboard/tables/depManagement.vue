@@ -82,11 +82,14 @@
       </v-toolbar>
     </template>
     <template v-slot:item.actions="{ item }">
-      <v-icon small class="mr-2" @click="editItem(item)">
+      <v-icon small class="mr-2" @click="editItem(item)" v-if="!item.isDeleted">
         mdi-pencil
       </v-icon>
-      <v-icon small @click="deleteItem(item)">
+      <v-icon small @click="deleteItem(item)" v-if="!item.isDeleted">
         mdi-delete
+      </v-icon>
+      <v-icon small @click="reviveItem(item)" v-if="item.isDeleted">
+        mdi-clipboard-plus
       </v-icon>
     </template>
   </v-data-table>
@@ -112,25 +115,24 @@ export default {
         { text: 'Actions', value: 'actions', sortable: false }
       ],
       deparmentIdRules: [
-        v => !!v || 'Phone Number is required',
+        v => !!v || 'Department ID is required',
         v =>
-          (v && v.length < 450) ||
-          'Department id must be less than 150 characters'
+          (v && v.length < 10) ||
+          'Department id must be less than 10 characters'
       ],
       phoneNumberRules: [
-        v => !!v || 'Phone Number is required',
         v =>
           (v && v.match(regex)) || 'Phone Number must be  format phone number'
       ],
       departmentNameRules: [
         v => !!v || 'Department name is required',
         v =>
-          (v && v.length < 450) ||
-          'Department name must be less than 450 characters'
+          (v && v.length < 50) ||
+          'Department name must be less than 50 characters'
       ],
       roomNumberRules: [
         v => !!v || 'Room num is required',
-        v => (v && v.length < 10) || 'Room num must be less than 10 characters'
+        v => (v && v.length < 6) || 'Room num must be less than 6 characters'
       ],
       editedIndex: -1,
       editedItem: {
@@ -182,7 +184,6 @@ export default {
       // const index = this._listOfDepartment.indexOf(item)
       confirm('Are you sure you want to delete this department?') &&
         (await this._deleteDepartment(item))
-      // await   this._listOfDepartment.splice(index, 1)
     },
 
     close () {
@@ -196,10 +197,8 @@ export default {
     async save () {
       if (this.editedIndex > -1) {
         await this._updateDepartment(this.editedItem)
-        // Object.assign(this._listOfDepartment[this.editedIndex], this.editedItem)
       } else {
         await this._addDepartment(this.editedItem)
-        // this._listOfDepartment.push(this.editedItem)
       }
       this.close()
     }

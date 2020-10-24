@@ -1,5 +1,5 @@
 import EDManagement from '@/services/EDManagement'
-const API_URL = ''
+const API_URL = 'api/v1/users'
 
 const user = JSON.parse(localStorage.getItem('UserInfo'))
 const initialState = user
@@ -41,16 +41,16 @@ export const auth = {
   },
   actions: {
     _login (context, user) {
-      return EDManagement.post(API_URL, {
+      return EDManagement.post(API_URL + '/authenticate', {
         username: user.username,
         password: user.password
       }).then(
         response => {
-          if (response.data.token) {
-            localStorage.setItem('UserInfo', JSON.stringify(response.data))
+          if (response) {
+            localStorage.setItem('UserInfo', JSON.stringify(response.data.data))
             context.commit('_loginSuccess', user)
           }
-          return response.data
+          return response.data.data
         },
         error => {
           context.commit('_loginFailure')
@@ -61,22 +61,6 @@ export const auth = {
     _logout ({ commit }) {
       localStorage.removeItem('UserInfo')
       commit('_logout')
-    },
-    _register (context, user) {
-      return EDManagement.post(API_URL + '/Register', {
-        username: user.username,
-        email: user.email,
-        password: user.password
-      }).then(
-        response => {
-          context.commit('_registerSuccess')
-          return Promise.resolve(response.data)
-        },
-        error => {
-          context.commit('_registerFailure')
-          return Promise.reject(error)
-        }
-      )
     }
   }
 }

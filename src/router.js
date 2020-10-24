@@ -8,8 +8,8 @@ const routes = [
     component: () => import('@/views/dashboard/Index'),
     children: [
       {
-        name: 'User Profile',
-        path: 'pages/user',
+        name: 'UserProfile',
+        path: 'user',
         component: () => import('@/views/dashboard/pages/UserProfile')
       },
       {
@@ -34,30 +34,29 @@ const router = new Router({
   routes
 })
 
-// router.beforeEach((to, from, next) => {
-//   const publicPages = ['Login']
-//   const ManagerPages = [
-//     'EmployeeManagement',
-//     'DepartmentManagement'
-//   ]
-//   const authRequired = !publicPages.includes(to.name)
-//   const user = JSON.parse(localStorage.getItem('UserInfo'))
-//   // trying to access a restricted page + not logged in
-//   // redirect to login page
-//   if (user === null) {
-//     // chưa đăng nhập
-//     if (authRequired) {
-//       next('/login')
-//     } else {
-//       next()
-//     }
-//   } else {
-//     // đã đăng nhập
-//     if (user.role !== 'Department Staff' && ManagerPages.includes(to.name)) {
-//       next()
-//     } else {
-//       next('/pages/user')
-//     }
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  const publicPages = ['Login']
+  const ManagerPages = ['EmployeeManagement', 'DepartmentManagement', 'UserProfile']
+  const authRequired = !publicPages.includes(to.name)
+  const user = JSON.parse(localStorage.getItem('UserInfo')).user
+  // trying to access a restricted page + not logged in
+  // redirect to login page
+  if (user === null) {
+    // chưa đăng nhập
+    if (authRequired) {
+      next('/login')
+    } else {
+      next()
+    }
+  } else {
+    // đã đăng nhập
+    if ((user.roleId === 1 || user.roleId === 3) && ManagerPages.includes(to.name)) {
+      next()
+    } else if (user.roleId === 2) {
+      next('/login')
+    } else {
+      next('/user')
+    }
+  }
+})
 export default router

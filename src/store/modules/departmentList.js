@@ -21,8 +21,8 @@ export const departmentList = {
       edtObj.roomNumber = department.roomNumber
     },
     _deleteDepartmentMutation (state, departmentID) {
-      debugger
-      state._listOfDepartment.pop(x => x.id === departmentID)
+      const edtObj = state._listOfDepartment.find(x => x.id === departmentID)
+      edtObj.isDeleted = !edtObj.isDeleted
     },
     _addDepartmentMutation (state, department) {
       state._listOfDepartment.push(department)

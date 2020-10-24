@@ -57,7 +57,6 @@
 <script>
 // Utilities
 import { mapState } from 'vuex'
-
 export default {
   name: 'DashboardCoreDrawer',
 
@@ -67,13 +66,29 @@ export default {
       default: false
     }
   },
-
+  mounted () {
+    // const user = JSON.parse(localStorage.getItem('UserInfo'))
+    // if (user.roleId === 3) {
+    //   this.items = [
+    //     {
+    //       icon: 'mdi-account',
+    //       title: 'user',
+    //       to: '/pages/user'
+    //     },
+    //     {
+    //       title: 'Employee Management',
+    //       icon: 'mdi-clipboard-outline',
+    //       to: '/employee-management'
+    //     }
+    //   ]
+    // }
+  },
   data: () => ({
     items: [
       {
         icon: 'mdi-account',
         title: 'user',
-        to: '/pages/user'
+        to: '/user'
       },
       {
         title: 'Employee Management',

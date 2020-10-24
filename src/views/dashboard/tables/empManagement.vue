@@ -97,11 +97,14 @@
       </v-toolbar>
     </template>
     <template v-slot:item.actions="{ item }">
-      <v-icon small class="mr-2" @click="editItem(item)">
+      <v-icon small class="mr-2" @click="editItem(item)" v-if="!item.isDeleted">
         mdi-pencil
       </v-icon>
-      <v-icon small @click="deleteItem(item)">
+      <v-icon small @click="deleteItem(item)" v-if="!item.isDeleted">
         mdi-delete
+      </v-icon>
+     <v-icon small @click="reviveItem(item)" v-if="item.isDeleted">
+        mdi-clipboard-plus
       </v-icon>
     </template>
   </v-data-table>
@@ -121,12 +124,10 @@ export default {
           'Employee name must be less than 100 characters'
       ],
       phoneNumberRules: [
-        v => !!v || 'Phone Number is required',
         v =>
           (v && v.match(regex)) || 'Phone Number must be  format phone number'
       ],
       addressRules: [
-        v => !!v || 'Address is required',
         v => (v && v.length < 450) || 'Address must be less than 450 characters'
       ],
       emailRules: [
@@ -200,10 +201,8 @@ export default {
     },
 
     async deleteItem (item) {
-      // const index = this._listOfEmployee.indexOf(item)
       confirm('Are you sure you want to delete this employee?') &&
         (await this._deleteEmployee(item))
-        //  && this._listOfEmployee.splice(index, 1)
     },
 
     close () {

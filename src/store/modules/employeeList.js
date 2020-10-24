@@ -27,8 +27,11 @@ export const employeeList = {
       edtObj.address = employee.address
       edtObj.email = employee.email
     },
-    async _deleteEmployeeMutation (state, employee) {
-      await state._listOfEmployee.pop(x => x.id === employee.id)
+    async _deleteEmployeeMutation (state, employeeId) {
+      const edtObj = await state._listOfEmployee.find(
+        x => x.id === employeeId
+      )
+      edtObj.isDeleted = !edtObj.isDeleted
     }
   },
   actions: {

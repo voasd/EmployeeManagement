@@ -6,7 +6,9 @@
     >
       <div class="wrap-login100 p-l-110 p-r-110 p-t-62 p-b-33">
         <div class="login100-form flex-sb flex-w">
-          <span class="login100-form-title" style="margin-bottom:5vh">SIGN IN</span>
+          <span class="login100-form-title" style="margin-bottom:5vh"
+            >SIGN IN</span
+          >
           <v-form ref="form" lazy-validation>
             <v-text-field
               ref="username"
@@ -30,9 +32,11 @@
               required
               placeholder="Password.."
             ></v-text-field>
-            <v-btn class="mr-4 login100-form-btn" @click="doLogin()">SIGN IN</v-btn>
+            <v-btn class="mr-4 login100-form-btn" @click="doLogin()"
+              >SIGN IN</v-btn
+            >
           </v-form>
-          {{ message}}
+          {{ message }}
           <div class="w-full text-center p-t-5">
             <span class="txt2">Not a member?</span>
 
@@ -58,14 +62,15 @@ export default {
         // v => (v && v.length >= 8) || 'Username must be more than 8 characters',
         v => (v && v.length < 50) || 'Username must be less than 50 characters'
       ],
-      passwordRules: [v => !!v || 'Password is required'
+      passwordRules: [
+        v => !!v || 'Password is required'
         // v => (v && v.length >= 8) || 'Username must be more than 8 characters'
       ],
       message: ''
     }
   },
   mounted () {
-    // console.log('this.user', this.user)
+    console.log('this.user', this.user)
   },
   methods: {
     ...mapActions('auth', ['_login']),
@@ -74,8 +79,8 @@ export default {
       if (valid) {
         if (this.user.username && this.user.password) {
           this._login(this.user).then(
-            response => {
-              this.$router.push('/pages/user')
+            () => {
+              this.$router.push('user')
             },
             error => {
               this.user.username = ''

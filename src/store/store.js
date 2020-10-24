@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import { employeeList } from '@/store/modules/employeeList'
 import { departmentList } from '@/store/modules/departmentList'
+import { auth } from '@/store/modules/auth'
+import { userAuthentication } from '@/store/modules/user'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -23,6 +25,8 @@ export default new Vuex.Store({
   actions: {},
   modules: {
     employeeList,
-    departmentList
+    departmentList,
+    auth,
+    userAuthentication
   }
 })
