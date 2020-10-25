@@ -103,7 +103,7 @@
       <v-icon small @click="deleteItem(item)" v-if="!item.isDeleted">
         mdi-delete
       </v-icon>
-     <v-icon small @click="reviveItem(item)" v-if="item.isDeleted">
+      <v-icon small @click="reviveItem(item)" v-if="item.isDeleted">
         mdi-clipboard-plus
       </v-icon>
     </template>
@@ -212,7 +212,11 @@ export default {
         this.editedIndex = -1
       })
     },
-
+    async reviveItem (item) {
+      item.isDeleted = !item.isDeleted
+      confirm('Are you sure you want to reivive this employee?') &&
+        (await this._updateEmployee(item))
+    },
     async save () {
       if (this.editedIndex > -1) {
         await this._updateEmployee(this.editedItem)

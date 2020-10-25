@@ -52,7 +52,7 @@ export const departmentList = {
       )
     },
     _updateDepartment (context, department) {
-      return EDManagement.put(API_URL, department).then(
+      return EDManagement.put(API_URL + '/' + department.id, department).then(
         response => {
           context.commit('_updateDepartmentMutation', response.data.data)
           return response.data.data

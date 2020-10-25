@@ -38,6 +38,7 @@
                     label="Department ID"
                     :rules="deparmentIdRules"
                     clearable
+                    v-if="editedIndex < 0"
                   >
                   </v-text-field>
                 </v-row>
@@ -193,7 +194,11 @@ export default {
         this.editedIndex = -1
       })
     },
-
+    async reviveItem (item) {
+      item.isDeleted = !item.isDeleted
+      confirm('Are you sure you want to revive this department?') &&
+        (await this._updateDepartment(item))
+    },
     async save () {
       if (this.editedIndex > -1) {
         await this._updateDepartment(this.editedItem)

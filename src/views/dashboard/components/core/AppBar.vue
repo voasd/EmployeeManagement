@@ -22,13 +22,16 @@
     <v-btn class="ml-2" min-width="0" text to="/pages/user">
       <v-icon>mdi-account</v-icon>
     </v-btn>
+    <v-btn class="ml-2" min-width="0" text @click="logout()">
+      <v-icon>mdi-logout</v-icon>
+    </v-btn>
   </v-app-bar>
 </template>
 
 <script>
 
 // Utilities
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'DashboardCoreAppBar',
@@ -41,25 +44,20 @@ export default {
       default: false
     }
   },
-
-  data: () => ({
-    notifications: [
-      'Mike John Responded to your email',
-      'You have 5 new tasks',
-      "You're now friends with Andrew",
-      'Another Notification',
-      'Another one'
-    ]
-  }),
+  methods: {
+    ...mapActions('auth', ['_logout']),
+    ...mapMutations({
+      setDrawer: 'SET_DRAWER'
+    }),
+    logout () {
+      this._logout()
+      this.$router.push('/login')
+    }
+  },
 
   computed: {
     ...mapState(['drawer'])
-  },
-
-  methods: {
-    ...mapMutations({
-      setDrawer: 'SET_DRAWER'
-    })
   }
+
 }
 </script>

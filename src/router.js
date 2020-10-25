@@ -38,7 +38,7 @@ router.beforeEach((to, from, next) => {
   const publicPages = ['Login']
   const ManagerPages = ['EmployeeManagement', 'DepartmentManagement', 'UserProfile']
   const authRequired = !publicPages.includes(to.name)
-  const user = JSON.parse(localStorage.getItem('UserInfo')).user
+  const user = JSON.parse(localStorage.getItem('UserInfo'))
   // trying to access a restricted page + not logged in
   // redirect to login page
   if (user === null) {
@@ -49,10 +49,11 @@ router.beforeEach((to, from, next) => {
       next()
     }
   } else {
+    const userAuth = user.user
     // đã đăng nhập
-    if ((user.roleId === 1 || user.roleId === 3) && ManagerPages.includes(to.name)) {
+    if ((userAuth.roleId === 1 || userAuth.roleId === 3) && ManagerPages.includes(to.name)) {
       next()
-    } else if (user.roleId === 2) {
+    } else if (userAuth.roleId === 2) {
       next('/login')
     } else {
       next('/user')
