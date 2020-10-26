@@ -67,21 +67,21 @@ export default {
     }
   },
   mounted () {
-    // const user = JSON.parse(localStorage.getItem('UserInfo'))
-    // if (user.roleId === 3) {
-    //   this.items = [
-    //     {
-    //       icon: 'mdi-account',
-    //       title: 'user',
-    //       to: '/pages/user'
-    //     },
-    //     {
-    //       title: 'Employee Management',
-    //       icon: 'mdi-clipboard-outline',
-    //       to: '/employee-management'
-    //     }
-    //   ]
-    // }
+    const userAuth = JSON.parse(localStorage.getItem('UserInfo')).user
+    if (userAuth.roleId === 3) {
+      this.items = [
+        {
+          icon: 'mdi-account',
+          title: 'user',
+          to: '/user'
+        },
+        {
+          title: 'Employee Management',
+          icon: 'mdi-clipboard-outline',
+          to: '/employee-management'
+        }
+      ]
+    }
   },
   data: () => ({
     items: [
