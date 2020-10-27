@@ -81,6 +81,14 @@ export default {
           to: '/employee-management'
         }
       ]
+    } else if (userAuth.roleId === 2) {
+      this.items = [
+        {
+          icon: 'mdi-account',
+          title: 'user',
+          to: '/user'
+        }
+      ]
     }
   },
   data: () => ({

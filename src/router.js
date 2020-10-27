@@ -49,12 +49,10 @@ router.beforeEach((to, from, next) => {
       next()
     }
   } else {
-    const userAuth = user.user
+    // const userAuth = user.user
     // đã đăng nhập
-    if ((userAuth.roleId === 1 || userAuth.roleId === 3) && ManagerPages.includes(to.name)) {
+    if (ManagerPages.includes(to.name)) {
       next()
-    } else if (userAuth.roleId === 2) {
-      next('/login')
     } else {
       next('/user')
     }
