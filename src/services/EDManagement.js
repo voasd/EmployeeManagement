@@ -1,6 +1,6 @@
 import axios from 'axios'
 import authHeader from './auth-header'
-const API_URL = 'https://localhost:44318/'
+const API_URL = 'https://employeedepartmentmanagement20201030002922.azurewebsites.net/'
 
 class EDManagement {
   get (url, obj) {
